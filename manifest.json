@@ -1,0 +1,38 @@
+{
+  "manifest_version": 2,
+
+  "name": "Ogame extension",
+  "description": "This extension helps managing your ogame account.",
+  "version": "0.1",
+
+  "browser_action": {
+    "default_icon": "assets/planet.png",
+    "default_popup": "popup/index.html"
+  },
+
+  "icons": {
+    "16": "assets/planet.png",
+    "64": "assets/planet.png"
+  },
+
+  "background": {
+    "page": "background/index.html"
+  },
+
+  "content_scripts": [{
+      "matches": ["http://ogame1304.de/*"],
+      "js": [
+        "/js/vendors/jquery-3.0.0.min.js",
+        "/js/modules/storage.js",
+        "content/js/refresh.js",
+        "content/js/checkFleets.js"
+      ]
+    }
+  ],
+
+  "permissions": [
+    "activeTab",
+    "storage",
+    "notifications"
+  ]
+}
