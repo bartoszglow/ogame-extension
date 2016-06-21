@@ -20,8 +20,9 @@ const App = Vue.extend({
           <option value="true">On</option>
         </select>
       </div>
-      <router-view></router-view>
-      <refresh-form v-if="extensionActive == 'true'"></refresh-form>
+      <div v-if="extensionActive === 'true'">
+        <router-view></router-view>
+      </div>
     </div>
   `,
   data: function() {
@@ -35,7 +36,7 @@ const App = Vue.extend({
       OE.Storage.set({"Active": event.target.value});
     }
   },
-  init: function() {
+  ready: function() {
     OE.Storage.ready(() => {
       this.extensionActive = OE.Storage.get("Active");
     });

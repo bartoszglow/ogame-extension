@@ -1,9 +1,11 @@
-OE.coordsShortcuts = (function() {
+OE.coordsShortcut = (function() {
   const __dictionary = {
     tableCoords: "#content center center tbody tr:nth-last-child(2)"
   };
 
-  let __players = [];
+  let __extensionActive = false,
+      __coordsShortcutActive = false,
+      __players = [];
 
   function __addShortcutsButtons() {
     let $table = $(__dictionary.tableCoords);
@@ -31,10 +33,14 @@ OE.coordsShortcuts = (function() {
   }
 
   function __init() {
-    console.log('a');
     OE.Storage.ready(() => {
+      __extensionActive = OE.Storage.get('Active') || __extensionActive;
+      __coordsShortcutActive = OE.Storage.get('CoordsShortcutActive') || __coordsShortcutActive;
       __players = OE.Storage.get('CoordsShortcutPlayers') || __players;
-      __addShortcutsButtons();
+
+      if(__extensionActive === 'true' && __coordsShortcutActive === 'true') {
+        __addShortcutsButtons();
+      }
     });
   }
 

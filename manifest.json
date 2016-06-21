@@ -30,7 +30,7 @@
     }, {
       "matches": ["http://ogame1304.de/game/index.php?page=flotten2*"],
       "js": [
-        "content/js/coordsShortcuts.js"
+        "content/js/coordsShortcut.js"
       ]
     }
   ],

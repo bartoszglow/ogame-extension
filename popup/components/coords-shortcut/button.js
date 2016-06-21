@@ -14,8 +14,8 @@ const coordsShortcutButton = Vue.extend({
                     @change="onCoordsShortcutActiveChange"
                     class="form-control input-sm"
                     style="width: auto;">
-              <option value="off">Off</option>
-              <option value="on">on</option>
+              <option value="false">Off</option>
+              <option value="true">on</option>
             </select>
           </div>
         </div>
