@@ -6,13 +6,13 @@
   "version": "0.1",
 
   "browser_action": {
-    "default_icon": "assets/planet.png",
+    "default_icon": "assets/img/planet.png",
     "default_popup": "popup/index.html"
   },
 
   "icons": {
-    "16": "assets/planet.png",
-    "64": "assets/planet.png"
+    "16": "assets/img/planet.png",
+    "64": "assets/img/planet.png"
   },
 
   "background": {
@@ -22,10 +22,15 @@
   "content_scripts": [{
       "matches": ["http://ogame1304.de/*"],
       "js": [
-        "/js/vendors/jquery-3.0.0.min.js",
-        "/js/modules/storage.js",
+        "/assets/js/vendors/jquery-3.0.0.min.js",
+        "/assets/js/modules/storage.js",
         "content/js/refresh.js",
         "content/js/checkFleets.js"
+      ]
+    }, {
+      "matches": ["http://ogame1304.de/game/index.php?page=flotten2*"],
+      "js": [
+        "content/js/coordsShortcuts.js"
       ]
     }
   ],

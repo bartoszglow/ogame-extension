@@ -31,7 +31,7 @@ window.addEventListener('load', function() {
     title: 'Primary Title',
     message: 'Primary message to display',
     priority: 1,
-    iconUrl: '/assets/planet.png',
+    iconUrl: '/assets/img/planet.png',
     items: [{ title: 'Item1', message: 'This is item 1.'},
             { title: 'Item2', message: 'This is item 2.'},
             { title: 'Item3', message: 'This is item 3.'}]

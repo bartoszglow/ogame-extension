@@ -12,7 +12,7 @@ OE.checkFleets = (function() {
         let to = links.eq(3).text();
         alert(`Fleet from: ${from} is attacking your planet: ${to}!`);
       });
-    }, 1000);
+    }, 3000);
   }
 
   __init();
