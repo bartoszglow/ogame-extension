@@ -44,7 +44,7 @@ const App = Vue.extend({
 
 var DefaultView = Vue.extend({
   template: `
-    <refresh-form></refresh-form>
+    <refresh-button></refresh-button>
     <coords-shortcut-button></coords-shortcut-button>
   `
 });

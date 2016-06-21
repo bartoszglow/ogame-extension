@@ -4,7 +4,12 @@ const coordsShortcutForm = Vue.extend({
       <div class="panel panel-primary">
 
         <div class="panel-heading clearfix">
-          <h4 class="panel-title pull-left" style="line-height: 30px;">Coordinates shortcuts</h4>
+          <h4 class="panel-title" style="line-height: 30px;">
+            Coordinates shortcuts
+            <a v-link="{ path: '/' }" class="pull-right">
+              <i class="fa fa-chevron-left" aria-hidden="true" style="margin: 8px 1px 7px 0"></i>
+            </a>
+          </h4>
         </div>
 
         <div class="panel-body" style="padding-bottom: 0;">
