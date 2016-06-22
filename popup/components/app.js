@@ -1,5 +1,7 @@
 const __extensionActive = "ogameExtensionActive";
 
+var router = new VueRouter();
+
 const App = Vue.extend({
   template: `
     <div class="">
@@ -34,11 +36,16 @@ const App = Vue.extend({
   methods: {
     onExtensionActiveChange: function(event) {
       OE.Storage.set({"Active": event.target.value});
+      router.go('/');
     }
   },
   ready: function() {
     OE.Storage.ready(() => {
       this.extensionActive = OE.Storage.get("Active");
+      let route = OE.Storage.get("Route");
+      if(route && route.path) {
+        router.go(route.path);
+      }
     });
   }
 });
@@ -50,8 +57,6 @@ var DefaultView = Vue.extend({
   `
 });
 
-var router = new VueRouter();
-
 router.map({
   '/': {
     component: DefaultView
@@ -62,6 +67,15 @@ router.map({
   '/coords-shortcut-form': {
     component: coordsShortcutForm
   }
+});
+
+router.beforeEach(function(transition) {
+  OE.Storage.ready(() => {
+    OE.Storage.set({
+      "Route" : transition.to
+    });
+  });
+  transition.next();
 });
 
 router.start(App, '#app');

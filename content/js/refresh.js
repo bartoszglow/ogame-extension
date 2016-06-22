@@ -89,7 +89,7 @@ OE.refresh = (function() {
         if(__properties.periodStart && __properties.periodEnd) {
           let timeout = __getRandomInt(__properties.periodStart, __properties.periodEnd);
           console.log(`Refresh start Random! Timeout: ${timeout} (seconds)`);
-          __intervalId = setInterval(this.refresh, timeout * 1000);
+          __intervalId = setInterval(refresh, timeout * 1000);
           return true;
         } else {
           return false;

@@ -6,7 +6,7 @@ const coordsShortcutButton = Vue.extend({
           <h4 class="panel-title pull-left" style="line-height: 30px;">Coordinates shortcuts</h4>
           <div class="pull-right" style="margin: 8px 0 8px 14px;">
             <a v-link="{ path: '/coords-shortcut-form' }">
-              <i class="fa fa-cog" aria-hidden="true" style="color: white;"></i>
+              <i class="fa fa-chevron-right" aria-hidden="true" style="color: white;"></i>
             </a>
           </div>
           <div class="pull-right">

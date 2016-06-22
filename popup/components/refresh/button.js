@@ -6,7 +6,7 @@ const refreshButton = Vue.extend({
           <h4 class="panel-title pull-left" style="line-height: 30px;">Refresh page</h4>
           <div class="pull-right" style="margin: 8px 0 8px 14px;">
             <a v-link="{ path: '/refresh-form' }">
-              <i class="fa fa-cog" aria-hidden="true" style="color: white;"></i>
+              <i class="fa fa-chevron-right" aria-hidden="true" style="color: white;"></i>
             </a>
           </div>
           <div class="pull-right">
