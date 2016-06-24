@@ -23,14 +23,27 @@
       "matches": ["http://ogame1304.de/*"],
       "js": [
         "/assets/js/vendors/jquery-3.0.0.min.js",
-        "/assets/js/modules/storage.js",
-        "content/js/refresh.js",
-        "content/js/checkFleets.js"
+        "/assets/js/vendors/vue.js",
+        "/assets/js/modules/storage.js"
+      ]
+    }, {
+      "matches": ["http://ogame1304.de/game/index.php?page=overview*"],
+      "js": [
+        "content/modules/refresh.js",
+        "content/modules/checkFleets.js"
       ]
     }, {
       "matches": ["http://ogame1304.de/game/index.php?page=flotten2*"],
       "js": [
-        "content/js/coordsShortcut.js"
+        "content/modules/coordsShortcut.js"
+      ]
+    }, {
+      "matches": ["http://ogame1304.de/game/index.php?page=options*"],
+      "js": [
+        "content/components/optionsRefresh.js",
+        "content/components/optionsCoordinates.js",
+        "content/components/optionsExtension.js",
+        "content/components/optionsApp.js"
       ]
     }
   ],
