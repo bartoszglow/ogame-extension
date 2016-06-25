@@ -8,17 +8,18 @@ var OptionsRefresh = Vue.extend({
       <th>Refresh active:</th>
       <th>
         <select v-model="localStorage.RefreshType"
-                @change="storageUpdated">
+                @change="storageUpdated"
+                style="text-align: center;">
           <option value="off">Off</option>
-          <option value="normal">normal</option>
-          <option value="random">random</option>
+          <option value="normal">Normal</option>
+          <option value="random">Random</option>
         </select>
       </th>
     </tr>
     <tr>
       <th>Check fleets & alarm:</th>
       <th>
-        <select name="extension-refresh-fleets-active">
+        <select name="extension-refresh-fleets-active" style="text-align: center;">
           <option value="off">Off</option>
           <option value="on">On</option>
         </select>
@@ -31,7 +32,8 @@ var OptionsRefresh = Vue.extend({
                 @change="storageUpdated"
                 type="text"
                 maxlength="5"
-                size="5">
+                size="5"
+                style="text-align: center;">
       </th>
     </tr>
     <tr>
@@ -42,13 +44,15 @@ var OptionsRefresh = Vue.extend({
                 @change="storageUpdated"
                 type="text"
                 maxlength="5" 
-                size="5"> 
+                size="5"
+                style="text-align: center;"> 
         to
         <input  v-model="localStorage.RefreshPeriodEnd"
                 @change="storageUpdated"
                 type="text"
                 maxlength="5" 
-                size="5"> 
+                size="5"
+                style="text-align: center;"> 
       </td>
     </tr>
   `,
