@@ -5,7 +5,7 @@ var OptionsRefresh = Vue.extend({
       <td class="c" colspan="2">{{title}}</td>
     </tr>
     <tr>
-      <th>Refresh active:</th>
+      <th>Refresh type:</th>
       <th>
         <select v-model="localStorage.RefreshType"
                 @change="storageUpdated"
