@@ -40,10 +40,16 @@
     }, {
       "matches": ["http://ogame1304.de/game/index.php?page=options*"],
       "js": [
+        "content/components/optionsAutologin.js",
         "content/components/optionsRefresh.js",
         "content/components/optionsCoordinates.js",
         "content/components/optionsExtension.js",
         "content/components/optionsApp.js"
+      ]
+    }, {
+      "matches": ["http://ogame1304.de/game/reg/login.php"],
+      "js": [
+        "content/modules/autologin.js"
       ]
     }
   ],

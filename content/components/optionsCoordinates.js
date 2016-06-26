@@ -102,7 +102,7 @@ var optionsCoordinates = Vue.extend({
     return {
       title: 'Coordinates Shortcuts',
       localStorage: {
-        CoordsShortcutActive: '',
+        CoordsShortcutActive: 'false',
         CoordsShortcutPlayers: []
       },
       newPlanet: {

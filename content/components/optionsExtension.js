@@ -20,7 +20,7 @@ var OptionsExtension = Vue.extend({
     return {
       title: 'Ogame Extension options',
       localStorage: {
-        Active: ''
+        Active: 'false'
       },
     };
   },

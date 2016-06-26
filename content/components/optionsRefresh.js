@@ -60,7 +60,7 @@ var OptionsRefresh = Vue.extend({
     return {
       title: 'Automatic refresh',
       localStorage: {
-        'RefreshType': '',
+        'RefreshType': 'off',
         'RefreshTime': '',
         'RefreshPeriodStart': '',
         'RefreshPeriodEnd': ''

@@ -6,6 +6,7 @@ new Vue({
   init: function() {
     let extensionContainer = `
       <options-extension :storage.sync="storage"></options-extension>
+      <options-autologin :storage.sync="storage"></options-autologin>
       <options-refresh :storage.sync="storage"></options-refresh>
       <options-coordinates :storage.sync="storage"></options-coordinates>
     `;
