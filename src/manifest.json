@@ -35,7 +35,9 @@
     }, {
       "matches": ["http://ogame1304.de/game/index.php?page=flotten2*"],
       "js": [
-        "content/modules/coordsShortcut.js"
+        "/assets/js/vendors/moment.js",
+        "content/modules/coordsShortcut.js",
+        "content/modules/timeCalculator.js"
       ]
     }, {
       "matches": ["http://ogame1304.de/game/index.php?page=options*"],
@@ -43,6 +45,7 @@
         "content/components/optionsAutologin.js",
         "content/components/optionsRefresh.js",
         "content/components/optionsCoordinates.js",
+        "content/components/optionsTimeCalculator.js",
         "content/components/optionsExtension.js",
         "content/components/optionsApp.js"
       ]

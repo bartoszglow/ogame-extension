@@ -14,6 +14,4 @@ OE.checkFleets = (function() {
   }
 
   $( document ).ready( __init );
-
-  __init();
 })();
