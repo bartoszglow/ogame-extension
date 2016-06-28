@@ -61,15 +61,30 @@ Few additional notes about this functionality:
 
 Remember to save all changes by clicking '*save changes*' button before going to other ogame page! Otherwise you will loose all unsaved changes!
 
-## 6. Road map.
+## 6. Versions.
+* v0.2.1.
+  * Prepared l10n solution with 'pl' and 'en' translations.
+  * Created time calculator solution to calculate arrival and return times of fleet.
+* v0.2.
+  * Prepared built-in ogame options page with possibility to change ogame extension settings.
+  * Created functionalities:
+    * Autologin.
+    * Coordinates shortcuts.
+    * Automatic refresh.
+* v0.1.
+  * Project architecture.
+  * Basic functionalities.
+  * Storage solution for storing extension data.
 
-## 7. Want to contribute?
+## 7. Road map.
 
-## 8. FAQ
+## 8. Want to contribute?
+
+## 9. FAQ
 1. Q: Why any functionality of extension does not work?!<br/>
   A: Ensure you set '*Extension active*' property in options as '*On*'.
 2. Q: Why I lost all extension settings after re-installing extension?!<br/>
   A: Currently there is no way of migrating between versions without loosing your extension settings.
 
-## 9. License
+## 10. License
 This software is produced under **[MIT](https://opensource.org/licenses/MIT)** license.

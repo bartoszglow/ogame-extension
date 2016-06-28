@@ -2,15 +2,15 @@ var OptionsTimeCalculator = Vue.extend({
   props: ['storage'],
   template: `
     <tr>
-      <td class="c" colspan="2">{{title}}</td>
+      <td class="c" colspan="2">{{translate.title}}</td>
     </tr>
     <tr>
-      <th>Time calculator active:</th>
+      <th>{{translate.active}}:</th>
       <th>
         <select v-model="localStorage.TimeCalculatorActive"
                 @change="storageUpdated">
-          <option value="false">Off</option>
-          <option value="true">On</option>
+          <option value="false">{{translate.off}}</option>
+          <option value="true">{{translate.on}}</option>
         </select>
       </th>
     </tr>
@@ -21,7 +21,26 @@ var OptionsTimeCalculator = Vue.extend({
       localStorage: {
         TimeCalculatorActive: 'false'
       },
+      dictionary: {
+        "en": {
+          title: 'Ogame time calculator',
+          active: 'Time calculator active',
+          off: 'off',
+          on: 'on'
+        },
+        "pl": {
+          title: 'Kalkulator czasu Ogame',
+          active: 'Kalkulator aktywny',
+          off: 'wyłączone',
+          on: 'włączone'
+        }
+      }
     };
+  },
+  computed: {
+    translate: function() {
+      return this.dictionary[this.storage.Language || "en"];
+    }
   },
   methods: {
     storageUpdated: function() {

@@ -2,21 +2,21 @@ var OptionsAutologin = Vue.extend({
   props: ['storage'],
   template: `
     <tr>
-      <td class="c" colspan="2">{{title}}</td>
+      <td class="c" colspan="2">{{translate.title}}</td>
     </tr>
     <tr>
-      <th>Autologin active:</th>
+      <th>{{translate.active}}:</th>
       <th>
         <select v-model="localStorage.AutologinActive"
                 @change="storageUpdated"
                 name="extension-active">
-          <option value="false">Off</option>
-          <option value="true">On</option>
+          <option value="false">{{translate.off}}</option>
+          <option value="true">{{translate.on}}</option>
         </select>
       </th>
     </tr>
     <tr>
-      <th>Login:</th>
+      <th>{{translate.username}}:</th>
       <th>
         <input  v-model="localStorage.AutologinLogin"
                 @change="storageUpdated"
@@ -24,7 +24,7 @@ var OptionsAutologin = Vue.extend({
       </th>
     </tr>
     <tr>
-      <th>Password:</th>
+      <th>{{translate.password}}:</th>
       <th>
         <input  v-model="localStorage.AutologinPassword"
                 @change="storageUpdated"
@@ -34,13 +34,35 @@ var OptionsAutologin = Vue.extend({
   `,
   data: function() {
     return {
-      title: 'Autologin settings',
       localStorage: {
         AutologinActive: 'false',
         AutologinLogin: '',
         AutologinPassword: ''
       },
+      dictionary: {
+        "en": {
+          title: 'Autologin settings',
+          active: 'Autologin active',
+          off: 'off',
+          on: 'on',
+          username: 'Username',
+          password: 'Password'
+        },
+        "pl": {
+          title: 'Ustawienia automatycznego logowania',
+          active: 'Automatyczne logowanie aktywne',
+          off: 'wyłączone',
+          on: 'włączone',
+          username: 'Użytkownik',
+          password: 'Hasło'
+        }
+      }
     };
+  },
+  computed: {
+    translate: function() {
+      return this.dictionary[this.storage.Language || "en"];
+    }
   },
   methods: {
     storageUpdated: function() {

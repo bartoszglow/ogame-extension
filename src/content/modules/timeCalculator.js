@@ -2,17 +2,18 @@ OE.timeCalculator = (function() {
   let $arrivalTime;
   let $returnTime;
   let $duration;
-  let dateFormat = 'D MMMM YYYY, HH:mm:ss';
-  let markup = `
-    <tr height="20">
-      <th>Date / Time of arrival</th>
-      <th class="arrival-time"></th>
-    </tr>
-    <tr height="20">
-      <th>Date / Time of return</th>
-      <th class="return-time"></th>
-    </tr>
-  `;
+  const dateFormat = 'D MMMM YYYY, HH:mm:ss';
+  let markup = '';
+  const dictionary = {
+    en: {
+      timeOfArrival: 'Date / Time of arrival',
+      timeOfReturn: 'Date / Time of return'
+    },
+    pl: {
+      timeOfArrival: 'Data / czas dolotu',
+      timeOfReturn: 'Data / czas powrotu'
+    }
+  };
 
   function addTime(time, timeString) {
     return time.add(timeString[0], 'hours').add(timeString[1], 'minutes').add(timeString[2], 'seconds');
@@ -28,6 +29,18 @@ OE.timeCalculator = (function() {
 
   function __init() {
     if(OE.Storage.get('Active') === 'true' && OE.Storage.get('TimeCalculatorActive') === 'true') {
+      let language = OE.Storage.get('Language') || 'en';
+      markup = `
+        <tr height="20">
+          <th>${dictionary[language].timeOfArrival}</th>
+          <th class="arrival-time"></th>
+        </tr>
+        <tr height="20">
+          <th>${dictionary[language].timeOfReturn}</th>
+          <th class="return-time"></th>
+        </tr>
+      `;
+
       $duration = $('#duration');
 
       $duration.closest('tr').after(markup);
@@ -41,5 +54,7 @@ OE.timeCalculator = (function() {
     }
   }
 
-  $( document ).ready( __init );
+  $( document ).ready( function() {
+    OE.Storage.ready(__init);
+  });
 })();

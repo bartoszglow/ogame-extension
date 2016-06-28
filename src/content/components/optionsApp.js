@@ -1,7 +1,9 @@
 new Vue({
   el: '#content table tbody',
   data: {
-    storage: {}
+    storage: {
+      Language: 'en'
+    }
   },
   init: function() {
     let extensionContainer = `
@@ -19,5 +21,10 @@ new Vue({
       OE.Storage.set(this.storage);
       return true;
     }
+  },
+  ready: function() {
+    OE.Storage.ready(() => {
+      this.storage.Language = OE.Storage.get('Language') || this.storage.Language;
+    });
   }
 });

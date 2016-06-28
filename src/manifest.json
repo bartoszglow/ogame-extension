@@ -3,7 +3,7 @@
 
   "name": "Ogame extension",
   "description": "This extension helps managing your ogame account.",
-  "version": "0.2",
+  "version": "0.2.1",
 
   "browser_action": {
     "default_icon": "assets/img/planet.png",

@@ -2,16 +2,16 @@ var optionsCoordinates = Vue.extend({
   props: ['storage'],
   template: `
     <tr>
-      <td class="c" colspan="2">{{title}}</td>
+      <td class="c" colspan="2">{{translate.title}}</td>
     </tr>
     <tr>
-      <th>Shortcuts active:</th>
+      <th>{{translate.active}}:</th>
       <th>
         <select v-model="localStorage.CoordsShortcutActive"
                 @change="storageUpdated"
                 name="extension-active">
-          <option value="false">Off</option>
-          <option value="true">On</option>
+          <option value="false">{{translate.off}}</option>
+          <option value="true">{{translate.on}}</option>
         </select>
       </th>
     </tr>
@@ -23,7 +23,7 @@ var optionsCoordinates = Vue.extend({
               <td class="c" colspan="3">
                 <span style="float: left;">{{player.name}}</span>
                 <span style="float: right; margin-right: 2px;">
-                  <a href="#" @click="removePlayer(player.name)">Delete Player</a>
+                  <a href="#" @click="removePlayer(player.name)">{{translate.deletePlayer}}</a>
                 </span>
               </td>
             </tr>
@@ -49,7 +49,7 @@ var optionsCoordinates = Vue.extend({
                         style="text-align: center; width: 30px;">
               </th>
               <th>
-                <a href="#" @click="removePlanet(player.name, planet.name)">Delete</a>
+                <a href="#" @click="removePlanet(player.name, planet.name)">{{translate.delete}}</a>
               </th>
             </tr>
             <tr>
@@ -69,7 +69,7 @@ var optionsCoordinates = Vue.extend({
                         style="text-align: center; width: 30px;">
               </th>
               <th>
-                <a href="#" @click="addNewPlanet(player.name, newPlanet)">Add Planet</a>
+                <a href="#" @click="addNewPlanet(player.name, newPlanet)">{{translate.addPlanet}}</a>
               </th>
             </tr>
           </tbody>
@@ -81,16 +81,16 @@ var optionsCoordinates = Vue.extend({
         <table style="width: 400px; margin: 0 auto;">
           <tbody>
             <tr>
-              <td class="c" colspan="3">{{newPlayer.name || 'New Player'}}</td>
+              <td class="c" colspan="3">{{newPlayer.name || translate.newPlayer}}</td>
             </tr>
             <tr>
-              <th>Player name:</th>
+              <th>{{translate.playerName}}:</th>
               <th>
                 <input  v-model="newPlayer.name"
                         type="text">
               </th>
               <th>
-                <a href="#" @click="addNewPlayer(newPlayer)">Add player</a>
+                <a href="#" @click="addNewPlayer(newPlayer)">{{translate.addPlayer}}</a>
               </th>
             </tr>
           </tbody>
@@ -100,7 +100,6 @@ var optionsCoordinates = Vue.extend({
   `,
   data: function() {
     return {
-      title: 'Coordinates Shortcuts',
       localStorage: {
         CoordsShortcutActive: 'false',
         CoordsShortcutPlayers: []
@@ -114,8 +113,39 @@ var optionsCoordinates = Vue.extend({
       newPlayer: {
         name: '',
         planets: []
+      },
+      dictionary: {
+        "en": {
+          title: 'Coordinates Shortcuts',
+          active: 'Autologin active',
+          off: 'off',
+          on: 'on',
+          deletePlayer: 'Delete player',
+          delete: 'Delete',
+          addPlanet: 'Add planet',
+          newPlayer: 'New player name',
+          playerName: 'Player name',
+          addPlayer: 'Add player'
+        },
+        "pl": {
+          title: 'Skróty koordynatów',
+          active: 'Skróty aktywne',
+          off: 'wyłączone',
+          on: 'włączone',
+          deletePlayer: 'Usuń gracza',
+          delete: 'Usuń',
+          addPlanet: 'Dodaj planetę',
+          newPlayer: 'Nazwa nowego użytkownika',
+          playerName: 'Nazwa użytkownika',
+          addPlayer: 'Dodaj gracza'
+        }
       }
     };
+  },
+  computed: {
+    translate: function() {
+      return this.dictionary[this.storage.Language || "en"];
+    }
   },
   methods: {
     storageUpdated: function() {
