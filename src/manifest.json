@@ -33,11 +33,17 @@
         "content/modules/checkFleets.js"
       ]
     }, {
+      "matches": ["http://ogame1304.de/game/index.php?page=flotten1*"],
+      "js": [
+        "/assets/js/vendors/moment.js",
+        "content/modules/timeCalculatorFlotten1.js"
+      ]
+    }, {
       "matches": ["http://ogame1304.de/game/index.php?page=flotten2*"],
       "js": [
         "/assets/js/vendors/moment.js",
         "content/modules/coordsShortcut.js",
-        "content/modules/timeCalculator.js"
+        "content/modules/timeCalculatorFlotten2.js"
       ]
     }, {
       "matches": ["http://ogame1304.de/game/index.php?page=options*"],

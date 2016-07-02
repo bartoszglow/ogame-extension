@@ -1,4 +1,4 @@
-OE.timeCalculator = (function() {
+OE.timeCalculatorFlotten2 = (function() {
   let $arrivalTime;
   let $returnTime;
   let $duration;
