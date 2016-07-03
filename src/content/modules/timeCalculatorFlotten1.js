@@ -66,6 +66,8 @@ OE.timeCalculatorFlotten1 = (function() {
 
       updateReturnTimes();
 
+      updateRecallTimes();
+
       setInterval(updateRecallTimes, 1000);
     }
   }
