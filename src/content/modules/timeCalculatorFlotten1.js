@@ -18,7 +18,7 @@ OE.timeCalculatorFlotten1 = (function() {
   }
 
   function updateReturnTimes() {
-    if($flottenReturn.length) {
+    if($flottenReturn.length > 0) {
       $.each($flottenReturn, function(index, element) {
         let $return = $(element);
         let departure = moment($return.parent().find('th:nth-child(5)').text());
@@ -30,12 +30,14 @@ OE.timeCalculatorFlotten1 = (function() {
   }
 
   function updateRecallTimes() {
-    if($flottenRecall.length && $flottenRecall.prev().find('form').length) {
+    if($flottenRecall.length > 0) {
       $.each($flottenRecall, function(index, element) {
         let $recall = $(element);
-        let departure = moment($recall.parent().find('th:nth-child(5)').text());
-        let recallTime = moment().add(moment().diff(departure) / 1000, 'seconds');
-        $recall.html(recallTime.format(dateFormat));
+        if($recall.prev().find('form').length > 0) {
+          let departure = moment($recall.parent().find('th:nth-child(5)').text());
+          let recallTime = moment().add(moment().diff(departure) / 1000, 'seconds');
+          $recall.html(recallTime.format(dateFormat));
+        }
       });
     }
   }

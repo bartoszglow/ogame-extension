@@ -18,7 +18,7 @@ OE.refresh = (function() {
     OE.Storage.ready(() => {
       __getInitialValues();
       __setWatchers();
-      if(__extensionActive === 'true') {
+      if(__extensionActive === 'true' && __properties.type !== 'off') {
         start();
       }
     });
