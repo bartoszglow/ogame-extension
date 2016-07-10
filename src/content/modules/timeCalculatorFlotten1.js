@@ -21,10 +21,15 @@ OE.timeCalculatorFlotten1 = (function() {
     if($flottenReturn.length > 0) {
       $.each($flottenReturn, function(index, element) {
         let $return = $(element);
-        let departure = moment($return.parent().find('th:nth-child(5)').text());
-        let arrival = moment($return.parent().find('th:nth-child(7)').text());
-        let returnTime = moment(arrival).add(arrival.diff(departure) / 1000, 'seconds');
-        $return.html(returnTime.format(dateFormat));
+        // Check if there is recall form. If so then we calculate return time, else return time is given as built in "arrival time".
+        if($return.next().find('form').length > 0) {
+          let departure = moment($return.parent().find('th:nth-child(5)').text());
+          let arrival = moment($return.parent().find('th:nth-child(7)').text());
+          let returnTime = moment(arrival).add(arrival.diff(departure) / 1000, 'seconds');
+          $return.html(returnTime.format(dateFormat));
+        } else {
+          $return.html('-');
+        }
       });
     }
   }
@@ -33,10 +38,13 @@ OE.timeCalculatorFlotten1 = (function() {
     if($flottenRecall.length > 0) {
       $.each($flottenRecall, function(index, element) {
         let $recall = $(element);
+        // Check if there is recall form. If so then we calculate recall time, else there is no sens to do that.
         if($recall.prev().find('form').length > 0) {
           let departure = moment($recall.parent().find('th:nth-child(5)').text());
           let recallTime = moment().add(moment().diff(departure) / 1000, 'seconds');
           $recall.html(recallTime.format(dateFormat));
+        } else {
+          $recall.html('-');
         }
       });
     }
