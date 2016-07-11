@@ -27,6 +27,18 @@ OE.timeCalculatorFlotten2 = (function() {
     $returnTime.html(returnTime.format(dateFormat));
   }
 
+  function preparePasteCoordsButton() {
+    $('select[name="planettype"]').after('&nbsp<a class="pasteCoords" href="">[paste]</a>');
+
+    $('.pasteCoords').click(function(e) {
+      e.preventDefault();
+      let coords = OE.Storage.get('CoordsCopy');
+      $('input[name="galaxy"]').val(coords[0]);
+      $('input[name="system"]').val(coords[1]);
+      $('input[name="planet"]').val(coords[2])[0].dispatchEvent(new Event('change'));
+    });
+  }
+
   function __init() {
     if(OE.Storage.get('Active') === 'true' && OE.Storage.get('TimeCalculatorActive') === 'true') {
       let language = OE.Storage.get('Language') || 'en';
@@ -49,6 +61,7 @@ OE.timeCalculatorFlotten2 = (function() {
       $returnTime = $('.return-time');
 
       updateTime();
+      preparePasteCoordsButton();
 
       setInterval(updateTime, 1000);
     }
