@@ -47,6 +47,11 @@
         "content/modules/timeCalculatorFlotten2.js"
       ]
     }, {
+      "matches": ["http://ogame1304.de/game/index.php?page=galaxy*"],
+      "js": [
+        "content/modules/galaxy.js"
+      ]
+    }, {
       "matches": ["http://ogame1304.de/game/index.php?page=options*"],
       "js": [
         "content/components/optionsAutologin.js",
