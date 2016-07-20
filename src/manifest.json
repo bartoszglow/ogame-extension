@@ -52,6 +52,11 @@
         "content/modules/galaxy.js"
       ]
     }, {
+      "matches": ["http://ogame1304.de/game/index.php?page=messages*"],
+      "js": [
+        "content/modules/messagesParser.js"
+      ]
+    }, {
       "matches": ["http://ogame1304.de/game/index.php?page=options*"],
       "js": [
         "content/components/optionsAutologin.js",
