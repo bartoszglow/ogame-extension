@@ -25,7 +25,8 @@
         "/assets/js/vendors/jquery-3.0.0.min.js",
         "/assets/js/vendors/vue.js",
         "/assets/js/modules/storage.js",
-        "content/modules/coordsCopy.js"
+        "content/modules/coordsCopy.js",
+        "content/modules/playersStorage.js"
       ]
     }, {
       "matches": ["http://ogame1304.de/game/index.php?page=overview*"],

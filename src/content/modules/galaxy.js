@@ -3,9 +3,12 @@ OE.galaxy = (function() {
   let __players;
   let __markup;
 
+  let seassion;
+
   let planetInfo = {
-    buildings: ['Metal Mine', 'Crystal Mine', 'Deuterium Synthesizer'],
-    defense: ['Rocket Launcher']
+    Resources: ['Metal:', 'Crystal:', 'Deuterium:', 'Energy:'],
+    Buildings: ['Metal Mine', 'Crystal Mine', 'Deuterium Synthesizer'],
+    Defense: ['Rocket Launcher']
   };
 
   /********************** UTILS **********************/
@@ -25,40 +28,91 @@ OE.galaxy = (function() {
     $.each(planets, function(planet) {
       let $planet = $(this);
       let buttons = $planet.find('a[onmouseover]');
-      if(buttons[0]) {
-        preparePlanetInfo(buttons.eq(0));
+      if (buttons[1]) {
+        let playerInfo = {};
+        let playerButton;
+        for (let i = 0; i < buttons.length; i++) {
+          let button = buttons[i];
+          if (playerInfo.name)
+            playerInfo.alliance = button.innerText;
+          if (button.innerText != " " && !playerInfo.name) {
+            playerInfo.name = button.innerText;
+            playerButton = i;
+          }
+        }
+        preparePlanetInfo(buttons, playerButton, playerInfo);
       }
     });
+    Player.save();
   }
 
-  function preparePlanetInfo($element) {
-    var text = $element.attr('onmouseover');
-    let injectPointIndex = text.indexOf('</table>');
-    let coordinates = text.slice(text.indexOf('[') + 1, text.indexOf(']')).split(":");
-
-    if(injectPointIndex > -1) {
+  function preparePlanetInfo(buttons, id, playerInfo) {
+    let $elementPlanet = buttons.eq(0);
+    let $elementPlayer = buttons.eq(id);
+    let textPlanet = $elementPlanet.attr('onmouseover');
+    let textPlayer = $elementPlayer.attr('onmouseover');
+    let injectPointIndex = textPlanet.indexOf('</table>');
+    let injectPointIndexPlayer = textPlayer.indexOf('</th>') + 5;
+    let coordinates = textPlanet.slice(textPlanet.indexOf('[') + 1, textPlanet.indexOf(']')).split(":");
+    let planetName = textPlanet.slice(textPlanet.indexOf('2 >') + 10, textPlanet.indexOf('[') - 1);
+    let data = playerInfo;
+    Object.assign(data, {
+      planets: [{
+        name: planetName,
+        galaxy: coordinates[0],
+        system: coordinates[1],
+        planet: coordinates[2]
+      }]
+    })
+    Player.new(data);
+    Player.save();
+    if (injectPointIndex > -1) {
       let additionalInfo = '';
-      let planet = findPlanet(...coordinates);
-      if(planet) {
-        $element.attr('onmouseover', text.slice(0, injectPointIndex) + preparePlanetInfoMarkup(planet) + text.slice(injectPointIndex, -1));
+      let planet = Player.findPlanets({
+        galaxy: coordinates[0],
+        system: coordinates[1],
+        planet: coordinates[2]
+      })[0];
+      if (planet) {
+        $elementPlanet.attr('onmouseover', textPlanet.slice(0, injectPointIndex) + preparePlanetInfoMarkup(planet) + textPlanet.slice(injectPointIndex, -1));
+        $elementPlayer.attr('onmouseover', textPlayer.slice(0, injectPointIndexPlayer) + preparePlayerInfoMarkup(planet.player) + textPlayer.slice(injectPointIndexPlayer, -1));
       }
-    } 
+    }
+  }
+
+  function preparePlayerInfoMarkup(player) {
+    let markup = '';
+    let temporaryMarkup = '';
+    let key = 'PLANETS';
+    player.planets.forEach(planet => {
+      let planetName = planet.name;
+      let planetCord = '[' + planet.galaxy + ':' + planet.system + ':' + planet.planet + ']';
+      let href=`index.php?page=galaxy&galaxy=${planet.galaxy}&system=${planet.system}&position=${planet.planet}&session=${session}`;
+      temporaryMarkup += `<tr><td>${planetName}</td><td><a href=${href}>${planetCord}</a></td></tr>`;
+    });
+    markup += `
+          <tr>
+            <td class=c > ${key} </td>
+          </tr>
+          <th>
+            <table>
+                ${temporaryMarkup}
+            </table>
+          </th>`;
+    return markup.replace(/\s\s+/g, '');
   }
 
   function preparePlanetInfoMarkup(planet) {
     let markup = '';
-
     Object.keys(planetInfo).forEach(key => {
-      if(planet[key]) {
+      if (planet[key]) {
         let temporaryMarkup = '';
-
         planetInfo[key].forEach(property => {
-          var propertyLevel = planet[key][camelize(property)];
-          if(propertyLevel) {
+          var propertyLevel = planet[key][property];
+          if (propertyLevel) {
             temporaryMarkup += `<tr><td>${property}</td><td>${propertyLevel || ''}</td></tr>`;
           }
         });
-
         markup += `
           <tr>
             <th colspan='2'>
@@ -72,63 +126,21 @@ OE.galaxy = (function() {
           </tr>`;
       }
     });
-
     return markup.replace(/\s\s+/g, '');
-  }
-
-  function findPlanet(galaxy, system, planetNumber) {
-    let planetFound;
-    __players.some(player => {
-      return player.planets.some(planet => {
-        if(planet.galaxy == galaxy && planet.system == system && planet.planet == planetNumber) {
-          planetFound = planet;
-          return planet;
-        }
-      });
-    });
-    return planetFound;
   }
 
   function __init() {
     OE.Storage.ready(() => {
+      const url = window.location.search.substring(1);
+      let query = url.split(/['&','=']+/);
+      session = query[query.indexOf('session') + 1];
+
       __extensionActive = OE.Storage.get('Active') || __extensionActive;
-      __players = OE.Storage.get('Players') || __players;
-
-      if(__extensionActive === 'true') {
-        OE.Storage.set({
-          'Players': [{
-            name: "testPlayer",
-            alliance: "testAlliance",
-            showInShortcuts: true,
-            research: {
-              weaponsTechnology: 5
-            },
-            planets: [{
-              name: 'Planet Name fdfs',
-              galaxy: 4,
-              system: 28,
-              planet: 6,
-              fleet: {
-                smallCargo: 4
-              },
-              defense: {
-                rocketLauncher: 4
-              },
-              buildings: {
-                metalMine: 13,
-                cps: 13,
-                crystalMine: 13
-              }
-            }]
-          }]
-        });
-
-        // updatePlayersInfo();
+      if (__extensionActive === 'true') {
         watchMouseHover();
-
       }
     });
   }
 
-  $( document ).ready( __init );
+  $(document).ready(__init);
 })();
