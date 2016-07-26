@@ -2,13 +2,12 @@ OE.galaxy = (function() {
   let __extensionActive = false;
   let __players;
   let __markup;
-
-  let seassion;
+  let session;
 
   let planetInfo = {
-    Resources: ['Metal:', 'Crystal:', 'Deuterium:', 'Energy:'],
+    Resources: ['Metal', 'Crystal', 'Deuterium'],
     Buildings: ['Metal Mine', 'Crystal Mine', 'Deuterium Synthesizer'],
-    Defense: ['Rocket Launcher']
+    Defense: ['Rocket Launcher', 'Light Laser', 'Heavy Laser', 'Gauss Cannon', 'Ion Cannon', 'Plasma Turret']
   };
 
   /********************** UTILS **********************/
@@ -21,42 +20,56 @@ OE.galaxy = (function() {
       return index == 0 ? letter.toLowerCase() : letter.toUpperCase();
     }).replace(/\s+/g, '');
   }
+
+  function getSession() {
+    const url = window.location.search.substring(1);
+    let query = url.split(/['&','=']+/);
+    return query[query.indexOf('session') + 1];
+  }
   /***************************************************/
 
   function watchMouseHover() {
     let planets = $('#content center > table tbody tr:nth-child(n+3)');
+    let system = [];
     $.each(planets, function(planet) {
       let $planet = $(this);
       let buttons = $planet.find('a[onmouseover]');
       if (buttons[1]) {
-        let playerInfo = {};
-        let playerButton;
-        for (let i = 0; i < buttons.length; i++) {
-          let button = buttons[i];
-          if (playerInfo.name)
-            playerInfo.alliance = button.innerText;
-          if (button.innerText != " " && !playerInfo.name) {
-            playerInfo.name = button.innerText;
-            playerButton = i;
-          }
-        }
-        preparePlanetInfo(buttons, playerButton, playerInfo);
+        system.push(preparePlanetInfo(buttons));
       }
     });
+    system.forEach(planetInfo => appendPlanetInfo(planetInfo));
     Player.save();
   }
 
-  function preparePlanetInfo(buttons, id, playerInfo) {
-    let $elementPlanet = buttons.eq(0);
-    let $elementPlayer = buttons.eq(id);
-    let textPlanet = $elementPlanet.attr('onmouseover');
-    let textPlayer = $elementPlayer.attr('onmouseover');
-    let injectPointIndex = textPlanet.indexOf('</table>');
-    let injectPointIndexPlayer = textPlayer.indexOf('</th>') + 5;
-    let coordinates = textPlanet.slice(textPlanet.indexOf('[') + 1, textPlanet.indexOf(']')).split(":");
-    let planetName = textPlanet.slice(textPlanet.indexOf('2 >') + 10, textPlanet.indexOf('[') - 1);
-    let data = playerInfo;
-    Object.assign(data, {
+  function preparePlanetInfo(buttons) {
+    let playerInfo = {};
+    let playerindex;
+    for (let i = 0; i < buttons.length; i++) {
+      let button = buttons[i];
+      if (playerInfo.name)
+        playerInfo.alliance = button.innerText;
+      if (button.innerText != " " && !playerInfo.name) {
+        playerInfo.name = button.innerText;
+        playerIndex = i;
+      }
+    }
+
+    const $elementPlanet = buttons.eq(0);
+    const $elementPlayer = buttons.eq(playerIndex);
+
+    let decoder = {
+      elementPlanet: $elementPlanet,
+      elementPlayer: $elementPlayer,
+      textPlanet: $elementPlanet.attr('onmouseover'),
+      textPlayer: $elementPlayer.attr('onmouseover'),
+      player: playerInfo
+    }
+
+    const coordinates = decoder.textPlanet.slice(decoder.textPlanet.indexOf('[') + 1, decoder.textPlanet.indexOf(']')).split(":");
+    const planetName = decoder.textPlanet.slice(decoder.textPlanet.indexOf('2 >') + 10, decoder.textPlanet.indexOf('[') - 1);
+
+    Object.assign(decoder.player, {
       planets: [{
         name: planetName,
         galaxy: coordinates[0],
@@ -64,18 +77,25 @@ OE.galaxy = (function() {
         planet: coordinates[2]
       }]
     })
-    Player.new(data);
-    Player.save();
-    if (injectPointIndex > -1) {
-      let additionalInfo = '';
-      let planet = Player.findPlanets({
-        galaxy: coordinates[0],
-        system: coordinates[1],
-        planet: coordinates[2]
+
+    Player.new(decoder.player);
+    return decoder;
+  }
+
+  function appendPlanetInfo(el) {
+    const injectPointIndexPlanet = el.textPlanet.indexOf('</table>');
+    const injectPointIndexPlayer = el.textPlayer.indexOf('</th>') + 5;
+
+    if (injectPointIndexPlanet > -1) {
+      const _planet = el.player.planets[0];
+      const planet = Player.findPlanets({
+        galaxy: _planet.galaxy,
+        system: _planet.system,
+        planet: _planet.planet
       })[0];
       if (planet) {
-        $elementPlanet.attr('onmouseover', textPlanet.slice(0, injectPointIndex) + preparePlanetInfoMarkup(planet) + textPlanet.slice(injectPointIndex, -1));
-        $elementPlayer.attr('onmouseover', textPlayer.slice(0, injectPointIndexPlayer) + preparePlayerInfoMarkup(planet.player) + textPlayer.slice(injectPointIndexPlayer, -1));
+        el.elementPlanet.attr('onmouseover', el.textPlanet.slice(0, injectPointIndexPlanet) + preparePlanetInfoMarkup(planet) + el.textPlanet.slice(injectPointIndexPlanet, -1));
+        el.elementPlayer.attr('onmouseover', el.textPlayer.slice(0, injectPointIndexPlayer) + preparePlayerInfoMarkup(planet.player) + el.textPlayer.slice(injectPointIndexPlayer, -1));
       }
     }
   }
@@ -83,7 +103,7 @@ OE.galaxy = (function() {
   function preparePlayerInfoMarkup(player) {
     let markup = '';
     let temporaryMarkup = '';
-    let key = 'PLANETS';
+    let key = 'Planets';
     player.planets.forEach(planet => {
       let planetName = planet.name;
       let planetCord = '[' + planet.galaxy + ':' + planet.system + ':' + planet.planet + ']';
@@ -113,6 +133,8 @@ OE.galaxy = (function() {
             temporaryMarkup += `<tr><td>${property}</td><td>${propertyLevel || ''}</td></tr>`;
           }
         });
+        if (key == 'Resources')
+          key += ' at ' + planet.report;
         markup += `
           <tr>
             <th colspan='2'>
@@ -131,12 +153,9 @@ OE.galaxy = (function() {
 
   function __init() {
     OE.Storage.ready(() => {
-      const url = window.location.search.substring(1);
-      let query = url.split(/['&','=']+/);
-      session = query[query.indexOf('session') + 1];
-
       __extensionActive = OE.Storage.get('Active') || __extensionActive;
       if (__extensionActive === 'true') {
+        session = getSession();
         watchMouseHover();
       }
     });

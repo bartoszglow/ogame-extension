@@ -74,7 +74,7 @@ OE.playersStorage = (function() {
     }
 
     static new(data) {
-      if (data.name){
+      if (data.name != null){
         let lastPlayer = __players.find(player => player.name == data.name);
         lastPlayer ? lastPlayer.update(data) : __players.push(new Player(data));
       } else if (data.planets){
@@ -84,7 +84,9 @@ OE.playersStorage = (function() {
             system: planet.system,
             planet: planet.planet
           });
-          mirrorPlanets[0] ? mirrorPlanets[0].player.update(data) : console.log("PLAYER-STORAGE! CAN NOT FIND PLANET");
+          if (!mirrorPlanets[0].report || mirrorPlanets[0].report < planet.report) {
+            mirrorPlanets[0] ? mirrorPlanets[0].player.update(data) : console.log("PLAYER-STORAGE! CAN NOT FIND PLANET");
+          }
         });
       }
     }
